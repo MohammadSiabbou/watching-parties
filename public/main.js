@@ -1,4 +1,4 @@
-var socket = io("http://localhost:3000", {
+var socket = io("https://d-watchonline.herokuapp.com", {
     transports: ["websocket"],
 });
 const vid = document.getElementById("player");
