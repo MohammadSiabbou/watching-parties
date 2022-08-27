@@ -2,6 +2,7 @@ const http = require('http')
 const express = require('express')
 const socketio = require('socket.io')
 var cors = require('cors');
+const path = require('path');
 
 
 const app = express()
@@ -17,10 +18,10 @@ app.use((req, res, next) => {
     app.io = io;
     return next();
 });
-
+app.use(express.static('public'))
 
 app.get('/', (req, res) => {
-    res.send('Hey');
+    res.sendFile(path.join(__dirname, '/index.html'));
 });
 
 io.on("connection", (socket) => {
@@ -31,9 +32,9 @@ io.on("connection", (socket) => {
         socket.broadcast.emit("new-user-connected");
     });
 
-    socket.on("play", ({time}) => {
-        console.log("play" , time);
-        socket.broadcast.emit("played" , {time : time});
+    socket.on("play", ({ time }) => {
+        console.log("play", time);
+        socket.broadcast.emit("played", { time: time });
     });
 
     socket.on("pause", () => {
